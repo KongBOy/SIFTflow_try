@@ -1,5 +1,10 @@
-im1=imread('Mars-1.jpg');
-im2=imread('Mars-2.jpg');
+% im1=imread('Mars-1.jpg');
+% im2=imread('Mars-2.jpg');
+
+
+im1= imread("kong_data/mushroom_right.jpg");  % 在Matlab裡面看資料時 註解 拿掉
+im2= imread("kong_data/mushroom_left.jpg");  % 在Matlab裡面看資料時 註解 拿掉
+
 
 im1=imresize(imfilter(im1,fspecial('gaussian',7,1.),'same','replicate'),0.5,'bicubic');
 im2=imresize(imfilter(im2,fspecial('gaussian',7,1.),'same','replicate'),0.5,'bicubic');
