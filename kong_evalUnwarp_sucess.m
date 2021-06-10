@@ -22,6 +22,10 @@ function result = kong_evalUnwarp_sucess(A, ref)  % 在Matlab裡面看資料時�
 
 % A   = "Mars-1.jpg";  % 在Matlab裡面看資料時 註解 拿掉
 % ref = "Mars-2.jpg";  % 在Matlab裡面看資料時 註解 拿掉
+
+% A   = "kong_data/mushroom_left.jpg";  % 在Matlab裡面看資料時 註解 拿掉
+% ref = "kong_data/mushroom_right.jpg";  % 在Matlab裡面看資料時 註解 拿掉
+
 tic
 x = imread(A);    % 用 file_name
 y = imread(ref);  % 用 file_name
@@ -96,7 +100,7 @@ for s = 1 : 5
 end
 ms = wt * ss;
 
-result = [ms, ld];
+result = {ms, ld, vx, vy, d};
 % fprintf('MS, LD time = %g sec\n', toc);  % 顯示時間
 
 % end

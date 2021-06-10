@@ -3,17 +3,22 @@ import matlab.engine
 import matlab
 import cv2
 import time
+import sys
+sys.path.append("../../kong_util")
+from util import method1, method2, get_reference_map
+import numpy as np
 
 def use_DewarpNet_eval(path1, path2):
     """
     result = [SSIM, LD]
     """
-    start_time = time.time()
+    # start_time = time.time()
+
     eng = matlab.engine.start_matlab()
     # print("engine.start_matlab cost time:", time.time() - start_time)
 
     #########################################################################################################
-    start_time = time.time()
+    # start_time = time.time()
     # path1 = "Mars-1.jpg"                       ### Debug用
     # path2 = "Mars-2.jpg"                       ### Debug用
 
@@ -24,6 +29,9 @@ def use_DewarpNet_eval(path1, path2):
     # path2 = "kong_data/rec_gt.jpg"               ### Debug用
 
     result = eng.kong_evalUnwarp_sucess(path1, path2)
+    """
+    ms, ld, vx, vy, d
+    """
     # print("eng.kong_evalUnwarp_sucess(path1, path2) cost time:", time.time() - start_time)
 
     #########################################################################################################
@@ -41,11 +49,56 @@ def use_DewarpNet_eval(path1, path2):
     # result = eng.kong_evalUnwarp_sucess(img1, img2)
     # print("eng.kong_evalUnwarp_sucess(img1, img2) cost time:", time.time() - start_time)
 
-    #########################################################################################################
     # print(result)
     eng.quit()
-    return result
+    #########################################################################################################
+    ms = result[0]  ## float
+    ld = result[1]  ## float
+    vx = np.asarray(result[2])  ### np.array
+    vy = np.asarray(result[3])  ### np.array
+    d  = np.asarray(result[4])  ### np.array
+    return [ms, ld, vx, vy, d]
 
 
 if(__name__ == "__main__"):
-    use_DewarpNet_eval(path1="Mars-1.jpg", path2="Mars-2.jpg")
+    import matplotlib.pyplot as plt
+
+    start_time = time.time()
+    # result = use_DewarpNet_eval(path1="Mars-1.jpg", path2="Mars-2.jpg")
+    # result = use_DewarpNet_eval(path1="kong_data/mushroom_right.jpg", path2="kong_data/mushroom_left.jpg")
+    # result = use_DewarpNet_eval(path1="kong_data/rec_epoch=0500.jpg", path2="kong_data/GT1.jpg")
+    # result = use_DewarpNet_eval(path1="kong_data/GT1.jpg", path2="kong_data/rec_epoch=0500.jpg")
+    result = use_DewarpNet_eval(path1="kong_data/rec_epoch=0499.jpg", path2="kong_data/rec_gt-see_009.jpg")
+    print("matlab cost time:", time.time() - start_time)
+
+
+    print(type(result[0]))  ## float
+    print(type(result[1]))  ### float
+    print(type(result[2]))  ### mlarray.double
+    print(type(result[3]))  ### mlarray.double
+    print(type(result[4]))  ### mlarray.double
+
+    start_time = time.time()
+    ms = result[0]  ## float
+    ld = result[1]  ## float
+    vx = np.asarray(result[2])  ### np.array
+    vy = np.asarray(result[3])  ### np.array
+    d  = np.asarray(result[4])  ### np.array
+    print("mlarray to np.array cost time:", time.time() - start_time)
+
+    visual1 = method1(vx, vy)
+    visual2 = method2(vx, vy, bgr2rgb=True, color_shift=1)
+
+    map1, map2, x_map, y_map = get_reference_map(max_move=24, bgr2rgb=True, color_shift=1)
+
+    fig, ax = plt.subplots(nrows=1, ncols=5)
+    fig.set_size_inches(30, 6)
+    ax[0].imshow(visual1)
+    ax[1].imshow(map1)
+    ax[2].imshow(visual2)
+    ax[3].imshow(map2)
+    ax[4].imshow(d)
+    d_mean = d.mean()
+
+    fig.tight_layout()
+    plt.show()
