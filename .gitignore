@@ -1,1 +1,3 @@
 __pycache__/
+replay_pid*
+.vscode
