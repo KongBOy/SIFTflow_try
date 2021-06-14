@@ -55,7 +55,7 @@ tic
 im1=im2double(im1);
 im2=im2double(im2);
 % fprintf('im2double time = %g sec\n', toc);  % 顯示時間
-
+% figure;imshow(im1);figure;imshow(im2);
 cellsize=3;
 gridspacing=1;
 
@@ -100,7 +100,7 @@ for s = 1 : 5
 end
 ms = wt * ss;
 
-result = {ms, ld, vx, vy, d};
+result = {ms, ld, vx, vy, d, im1, im2};
 % fprintf('MS, LD time = %g sec\n', toc);  % 顯示時間
 
 % end
