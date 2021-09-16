@@ -5,7 +5,7 @@ import cv2
 import time
 import sys
 sys.path.append("../../kong_util")
-from util import method1, method2, get_reference_map
+from util import method1, method2, get_flow_reference_map
 import numpy as np
 
 def use_DewarpNet_eval(path1, path2):
@@ -102,12 +102,11 @@ if(__name__ == "__main__"):
     visual1 = method1(vx, vy)
     visual2 = method2(vx, vy, bgr2rgb=True, color_shift=1)
 
-    map1, map2, x_map, y_map = get_reference_map(max_move=24, bgr2rgb=True, color_shift=1)
+    map2, x_map, y_map = get_flow_reference_map(max_move=24, bgr2rgb=True, color_shift=1)
 
     fig, ax = plt.subplots(nrows=1, ncols=7)
     fig.set_size_inches(42, 6)
     ax[0].imshow(visual1)
-    ax[1].imshow(map1)
     ax[2].imshow(visual2)
     ax[3].imshow(map2)
     ax[4].imshow(d)
