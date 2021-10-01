@@ -1,8 +1,15 @@
-im1=imread('Mars-1.jpg');
-im2=imread('Mars-2.jpg');
+% 就是故意不commit 來看一下 SIFTflow 原本的 demo  跟 DewarpNet_eval 的 demo 差別在哪裡
+% im1=imread('Mars-1.jpg');
+% im2=imread('Mars-2.jpg');
 
-im1=imresize(imfilter(im1,fspecial('gaussian',7,1.),'same','replicate'),0.5,'bicubic');
-im2=imresize(imfilter(im2,fspecial('gaussian',7,1.),'same','replicate'),0.5,'bicubic');
+im1 = ycell{36};
+im1 = rgb2gray(im1);
+im2 = xcell{36, 2};
+im2 = rgb2gray(im2);
+% im2 = imresize(im2, size(im1));
+
+im1=imresize(imfilter(im1,fspecial('gaussian',3,1.),'same','replicate'),1,'bicubic');
+im2=imresize(imfilter(im2,fspecial('gaussian',3,1.),'same','replicate'),1,'bicubic');
 
 im1=im2double(im1);
 im2=im2double(im2);
