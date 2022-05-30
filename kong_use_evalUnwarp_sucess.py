@@ -5,7 +5,7 @@ import cv2
 import time
 import sys
 sys.path.append("../../kong_util")
-from util import method1, method2, get_flow_reference_map
+from kong_util.util import method1, method2, get_flow_reference_map
 import numpy as np
 
 def use_DewarpNet_eval(path1, path2):
