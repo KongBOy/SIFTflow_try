@@ -62,6 +62,17 @@ def use_DewarpNet_eval(path1, path2):
     return [ms, ld, vx, vy, d, im1, im2]
 
 
+def keep_aspect_ratio_and_resize_to_598400_area(img):
+    import cv2
+    h, w, c = img.shape
+    unit_area = w / h
+    ratio = (598400 / unit_area) ** (1 / 2) 
+    resize_h = round(    1     * ratio)
+    resize_w = round(unit_area * ratio)
+    resized_near_598400_area = cv2.resize(img, (resize_w, resize_h))
+    return resized_near_598400_area, resize_h, resize_w
+
+
 if(__name__ == "__main__"):
     import matplotlib.pyplot as plt
 
