@@ -63,13 +63,20 @@ def use_DewarpNet_eval(path1, path2):
 
 
 def keep_aspect_ratio_and_resize_to_598400_area(img):
+    ### 已經記利模仿了 https://github.com/cvlab-stonybrook/DewarpNet/issues/22 ，實驗過了SSIM/LD數值還是不一樣～ 還是要盡Matlab裡面 用他們的 resize 結果才會一樣喔～ 寫了都寫了還是留下來吧
     import cv2
-    h, w, c = img.shape
-    unit_area = w / h
-    ratio = (598400 / unit_area) ** (1 / 2) 
-    resize_h = round(    1     * ratio)
-    resize_w = round(unit_area * ratio)
-    resized_near_598400_area = cv2.resize(img, (resize_w, resize_h))
+    h, w = img.shape[:2]
+    ratio = (598400 / (h * w)) ** 0.5
+    resize_h = round(h * ratio)
+    resize_w = round(w * ratio)
+    resized_near_598400_area = cv2.resize(img, (resize_w, resize_h), interpolation=cv2.INTER_CUBIC)
+    print(resize_h, resize_w)
+
+    # unit_area = w / h
+    # ratio = (598400 / unit_area) ** (1 / 2) 
+    # resize_h = round(    1     * ratio)
+    # resize_w = round(unit_area * ratio)
+    # resized_near_598400_area = cv2.resize(img, (resize_w, resize_h))
     return resized_near_598400_area, resize_h, resize_w
 
 

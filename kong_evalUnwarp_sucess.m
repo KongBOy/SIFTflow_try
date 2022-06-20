@@ -31,6 +31,16 @@ x = imread(A);    % 用 file_name
 y = imread(ref);  % 用 file_name
 % fprintf('imread time = %g sec\n', toc);  % 顯示時間
 
+% 終於在Github上面找到作者的 eval code！ 參考：https://github.com/cvlab-stonybrook/DewarpNet/issues/22 ， 發現原曬我沒有 轉gray 和 resize 要用 Matlab 裡面的 resize 才能得到相同的結果喔！
+% 以 ref_img 為基準 來 resize 到 598400
+[rh,rw,~]=size(y);
+y=rgb2gray(y);
+y=imresize(y,sqrt(598400/(rh*rw)),'bicubic');
+[rh,rw,rc]=size(y);
+
+x=rgb2gray(x);
+x=imresize(x,[rh rw],'bicubic');
+
 
 % tic
 % x = A;    % 用 np array
